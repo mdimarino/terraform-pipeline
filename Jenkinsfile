@@ -17,7 +17,7 @@ pipeline {
             description: 'Ação do Terraform a ser executada',
             name: 'action')
 
-        string(defaultValue: "default", description: 'Which AWS Account (Boto profile) do you want to target?', name: 'AWS_PROFILE')
+        // string(defaultValue: "default", description: 'Which AWS Account (Boto profile) do you want to target?', name: 'AWS_PROFILE')
         string(defaultValue: "iac/terraform-remote-backend-state-us-east-1", description: 'Caminho dentro do diretório iac/', name: 'IAC_PATH')
     }
 
