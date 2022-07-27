@@ -10,7 +10,7 @@ terraform {
 
 locals {
   region         = "us-east-1"
-  profile        = "acg"
+#   profile        = "acg"
   resource_group = "terraform-remote-backend-state"
 }
 
