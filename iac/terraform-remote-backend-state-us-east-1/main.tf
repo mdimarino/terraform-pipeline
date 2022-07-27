@@ -10,16 +10,10 @@ terraform {
 
 locals {
   region         = "us-east-1"
-#   profile        = "acg"
   resource_group = "terraform-remote-backend-state"
 }
 
 provider "aws" {
-#   region  = local.region
-#   profile = local.profile
-
-#   shared_credentials_files = ["~/.aws/credentials"]
-
   default_tags {
     tags = {
       Environment   = "global"
