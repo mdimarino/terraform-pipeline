@@ -7,18 +7,14 @@ pipeline {
         }
     }
 
-    environment {
-        AWS_DEFAULT_REGION="us-east-1"
-    }
-
     parameters {
         choice(
             choices: ['plan' , 'apply' , 'show', 'plan-destroy' , 'destroy'],
             description: 'Ação do Terraform a ser executada',
             name: 'action')
 
-        // string(defaultValue: "default", description: 'Which AWS Account (Boto profile) do you want to target?', name: 'AWS_PROFILE')
-        string(defaultValue: "iac/terraform-remote-backend-state-us-east-1", description: 'Caminho dentro do diretório iac/', name: 'IAC_PATH')
+        string(defaultValue: "us-east-1", description: 'A região que será usada', name: 'AWS_DEFAULT_REGION')
+        string(defaultValue: "iac/terraform-remote-backend-state-us-east-1", description: 'Caminho dentro do diretório iac/ do repositório', name: 'IAC_PATH')
     }
 
     stages {
@@ -31,8 +27,7 @@ pipeline {
 
         stage('init') {
             steps {
-                dir('iac/terraform-remote-backend-state-us-east-1') {
-                    sh 'pwd'
+                dir('${IAC_PATH}') {
                     sh 'terraform version'
                     sh 'terraform init -no-color'
                 }
@@ -44,8 +39,7 @@ pipeline {
                 expression { params.action == 'plan' || params.action == 'apply' || params.action == 'destroy' }
             }
             steps {
-                dir('iac/terraform-remote-backend-state-us-east-1') {
-                    sh 'pwd'
+                dir('${IAC_PATH}') {
                     sh 'terraform validate -no-color'
                 }
             }
@@ -57,9 +51,7 @@ pipeline {
             }
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "acg-aws-credential", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                    dir('iac/terraform-remote-backend-state-us-east-1') {
-                            sh 'pwd'
-                            sh 'env | sort'
+                    dir('${IAC_PATH}') {
                             sh 'terraform plan -no-color'
                         }
                     }
