@@ -23,6 +23,12 @@ pipeline {
 
     stages {
 
+        stage('clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/mdimarino/terraform-pipeline'
+            }
+        }
+
         stage('init') {
             steps {
                 withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
