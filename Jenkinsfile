@@ -18,6 +18,7 @@ pipeline {
             name: 'action')
 
         string(defaultValue: "default", description: 'Which AWS Account (Boto profile) do you want to target?', name: 'AWS_PROFILE')
+        string(defaultValue: "default", description: 'Path ', name: 'AWS_PROFILE')
     }
 
     stages {
