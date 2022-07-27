@@ -14,8 +14,8 @@ pipeline {
             name: 'action')
 
         string(name: 'AWS_ACCOUNT_ID', defaultValue: "123456789012", description: 'O ID da conta na AWS')
-        string(name: 'AWS_REGION', defaultValue: "us-east-1", description: 'A região que será usada', )
-        string(defaultValue: "dummy", description: 'Caminho dentro do diretório iac/ do repositório', name: 'IAC_DIR')
+        string(name: 'AWS_REGION', defaultValue: "us-east-1", description: 'A região que será usada' )
+        string(name: 'IAC_DIR', defaultValue: "dummy", description: 'Caminho dentro do diretório iac/ do repositório')
     }
 
     stages {
@@ -28,10 +28,12 @@ pipeline {
 
         stage('init') {
             steps {
-                dir('${IAC_DIR}') {
-                    sh 'terraform version'
-                    // sh 'terraform init -no-color'
-                    sh 'terraform init -backend-config="bucket=${AWS_ACCOUNT_ID}-${AWS_REGION}-terraform-remote-backend-state" -backend-config="key=${IAC_DIR}/terraform.tfstate" -backend-config="region=${AWS_REGION}" -backend-config="dynamodb_table=${AWS_ACCOUNT_ID}-${AWS_REGION}-terraform-remote-backend-state"'
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "acg-aws-credential", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    dir('${IAC_DIR}') {
+                        sh 'terraform version'
+                        echo 'terraform init -backend-config="bucket=${AWS_ACCOUNT_ID}-${AWS_REGION}-terraform-remote-backend-state" -backend-config="key=${IAC_DIR}/terraform.tfstate" -backend-config="region=${AWS_REGION}" -backend-config="dynamodb_table=${AWS_ACCOUNT_ID}-${AWS_REGION}-terraform-remote-backend-state"'
+                        sh 'terraform init -backend-config="bucket=${AWS_ACCOUNT_ID}-${AWS_REGION}-terraform-remote-backend-state" -backend-config="key=${IAC_DIR}/terraform.tfstate" -backend-config="region=${AWS_REGION}" -backend-config="dynamodb_table=${AWS_ACCOUNT_ID}-${AWS_REGION}-terraform-remote-backend-state"'
+                    }
                 }
             }
         }
