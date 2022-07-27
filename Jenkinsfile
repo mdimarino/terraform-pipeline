@@ -28,7 +28,7 @@ pipeline {
                 withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('iac/terraform-remote-backend-state-us-east-1') {
                         sh 'terraform version'
-                        echo 'terraform init'
+                        sh 'terraform init'
                     }
                 }
             }
@@ -42,7 +42,7 @@ pipeline {
                 
                 withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('iac/terraform-remote-backend-state-us-east-1') {
-                        echo 'terraform validate'
+                        sh 'terraform validate'
                     }
                 }
             }
@@ -53,7 +53,11 @@ pipeline {
                 expression { params.action == 'plan' }
             }
             steps {
-                echo 'terraform plan -var aws_profile=${AWS_PROFILE}'
+                withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    dir('iac/terraform-remote-backend-state-us-east-1') {
+                        sh 'terraform plan'
+                    }
+                }
             }
         }
         
