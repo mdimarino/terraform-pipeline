@@ -31,12 +31,10 @@ pipeline {
 
         stage('init') {
             steps {
-                withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                    dir('iac/terraform-remote-backend-state-us-east-1') {
-                        sh 'pwd'
-                        sh 'terraform version'
-                        sh 'terraform init -no-color'
-                    }
+                dir('iac/terraform-remote-backend-state-us-east-1') {
+                    sh 'pwd'
+                    sh 'terraform version'
+                    sh 'terraform init -no-color'
                 }
             }
         }
@@ -46,12 +44,9 @@ pipeline {
                 expression { params.action == 'plan' || params.action == 'apply' || params.action == 'destroy' }
             }
             steps {
-                
-                withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                    dir('iac/terraform-remote-backend-state-us-east-1') {
-                        sh 'pwd'
-                        sh 'terraform validate -no-color'
-                    }
+                dir('iac/terraform-remote-backend-state-us-east-1') {
+                    sh 'pwd'
+                    sh 'terraform validate -no-color'
                 }
             }
         }
@@ -61,7 +56,8 @@ pipeline {
                 expression { params.action == 'plan' }
             }
             steps {
-                withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                //withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                withAWS(credentials: 'acg-aws-credential', region: 'us-east-1')
                     dir('iac/terraform-remote-backend-state-us-east-1') {
                         sh 'pwd'
                         sh 'terraform plan -no-color'
