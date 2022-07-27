@@ -25,7 +25,7 @@ pipeline {
 
         stage('clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/mdimarino/terraform-pipeline'
+                git branch: 'main', url: 'https://github.com/mdimarino/terraform-pipeline.git'
             }
         }
 
