@@ -33,6 +33,7 @@ pipeline {
             steps {
                 withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('iac/terraform-remote-backend-state-us-east-1') {
+                        sh 'pwd'
                         sh 'terraform version'
                         sh 'terraform init -no-color'
                     }
@@ -48,6 +49,7 @@ pipeline {
                 
                 withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('iac/terraform-remote-backend-state-us-east-1') {
+                        sh 'pwd'
                         sh 'terraform validate -no-color'
                     }
                 }
@@ -61,6 +63,7 @@ pipeline {
             steps {
                 withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('iac/terraform-remote-backend-state-us-east-1') {
+                        sh 'pwd'
                         sh 'terraform plan'
                     }
                 }
