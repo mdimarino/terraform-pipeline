@@ -59,6 +59,7 @@ pipeline {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "acg-aws-credential", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     dir('iac/terraform-remote-backend-state-us-east-1') {
                             sh 'pwd'
+                            sh 'env | sort'
                             sh 'terraform plan -no-color'
                         }
                     }
