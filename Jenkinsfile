@@ -34,7 +34,7 @@ pipeline {
                 withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('iac/terraform-remote-backend-state-us-east-1') {
                         sh 'terraform version'
-                        sh 'terraform init'
+                        sh 'terraform init -no-color'
                     }
                 }
             }
@@ -48,7 +48,7 @@ pipeline {
                 
                 withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('iac/terraform-remote-backend-state-us-east-1') {
-                        sh 'terraform validate'
+                        sh 'terraform validate -no-color'
                     }
                 }
             }
@@ -61,7 +61,7 @@ pipeline {
             steps {
                 withCredentials([aws(credentialsId: 'acg-aws-credential', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('iac/terraform-remote-backend-state-us-east-1') {
-                        sh 'terraform plan'
+                        sh 'terraform plan -no-color'
                     }
                 }
             }
@@ -73,7 +73,7 @@ pipeline {
             }
             steps {
                 echo 'terraform plan -out=plan -var aws_profile=${AWS_PROFILE}'
-                echo 'terraform apply -auto-approve plan'
+                echo 'terraform apply -auto-approve -no-color plan'
             }
         }
         
@@ -82,7 +82,7 @@ pipeline {
                 expression { params.action == 'show' }
             }
             steps {
-                echo 'terraform show'
+                echo 'terraform show -no-color'
             }
         }
         
@@ -91,7 +91,7 @@ pipeline {
                 expression { params.action == 'plan-destroy' }
             }
             steps {
-                echo 'terraform plan -destroy -var aws_profile=${AWS_PROFILE}'
+                echo 'terraform plan -destroy -no-color'
             }
         }
         
@@ -100,7 +100,7 @@ pipeline {
                 expression { params.action == 'destroy' }
             }
             steps {
-                echo 'terraform destroy -auto-approve -var aws_profile=${AWS_PROFILE}'
+                echo 'terraform destroy -auto-approve -no-color'
             }
         }
     }
