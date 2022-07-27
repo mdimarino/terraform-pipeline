@@ -1,2 +1,2 @@
 # terrraform-pipeline
-This is work in progress for a Terraform Pipeline
+This is a work in progress for a Terraform Pipeline
