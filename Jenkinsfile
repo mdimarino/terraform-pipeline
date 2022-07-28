@@ -7,6 +7,10 @@ pipeline {
         }
     }
 
+    options {
+        ansiColor('xterm')
+    }
+
     parameters {
         choice(
             choices: ['plan' , 'apply' , 'show', 'plan-destroy' , 'destroy'],
