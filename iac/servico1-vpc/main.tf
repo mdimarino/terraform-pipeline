@@ -18,7 +18,17 @@ locals {
   environment  = "desenvolvimento"
 }
 
-provider "aws" {}
+provider "aws" {
+  default_tags {
+    tags = {
+      Service       = local.service
+      Environment   = local.environment
+      Billing       = "infrastructure"
+      Provisioner   = "Terraform"
+      ResourceGroup = "${local.service}-${local.environment}"
+    }
+  }
+}
 
 module "network" {
   source = "../../modules/vpc"

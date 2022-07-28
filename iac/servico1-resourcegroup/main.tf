@@ -13,11 +13,21 @@ terraform {
 }
 
 locals {
-  service      = "servico1"
-  environment  = "desenvolvimento"
+  service     = "servico1"
+  environment = "desenvolvimento"
 }
 
-provider "aws" {}
+provider "aws" {
+  default_tags {
+    tags = {
+      Service       = local.service
+      Environment   = local.environment
+      Billing       = "infrastructure"
+      Provisioner   = "Terraform"
+      ResourceGroup = "${local.service}-${local.environment}"
+    }
+  }
+}
 
 module "resourcegroup" {
   source = "../../modules/resourcegroup"
