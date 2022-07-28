@@ -30,7 +30,7 @@ provider "aws" {
   }
 }
 
-module "network" {
+module "vpc" {
   source = "../../modules/vpc"
 
   service                     = local.service
