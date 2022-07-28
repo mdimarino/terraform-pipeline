@@ -59,9 +59,9 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "acg-aws-credential", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     dir('iac/${IAC_DIR}') {
-                            sh 'terraform plan'
-                        }
+                        sh 'terraform plan'
                     }
+                }
             }
         }
         
@@ -72,9 +72,9 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "acg-aws-credential", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     dir('iac/${IAC_DIR}') {
-                            sh 'terraform plan -out=plan'
-                            sh 'terraform apply -auto-approve plan'
-                        }
+                        sh 'terraform plan -out=plan'
+                        sh 'terraform apply -auto-approve plan'
+                    }
                 }
             }
         }
@@ -86,8 +86,8 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "acg-aws-credential", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     dir('iac/${IAC_DIR}') {
-                            sh 'terraform show'
-                        }
+                        sh 'terraform show'
+                    }
                 }
             }
         }
@@ -99,8 +99,8 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "acg-aws-credential", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     dir('iac/${IAC_DIR}') {
-                            sh 'terraform plan -destroy'
-                        }
+                        sh 'terraform plan -destroy'
+                    }
                 }
             }
         }
@@ -112,8 +112,8 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "acg-aws-credential", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     dir('iac/${IAC_DIR}') {
-                            sh 'terraform destroy -auto-approve'
-                        }
+                        sh 'terraform destroy -auto-approve'
+                    }
                 }
             }
         }
