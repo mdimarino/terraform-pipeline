@@ -26,6 +26,7 @@ pipeline {
 
         stage('clone') {
             steps {
+                cleanWs()
                 git branch: 'main', url: 'https://github.com/mdimarino/terraform-pipeline.git'
             }
         }
